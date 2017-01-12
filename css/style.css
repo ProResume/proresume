@@ -1,0 +1,66 @@
+body {
+	position: relative; 
+	padding:75px 0 0 0;
+	margin:0;
+	overflow-x:hidden;
+}
+
+.container-fluid,.resumeForm{
+	padding:50px;
+}  
+
+#about,#howItWorks,.resumeForm{
+	background-color:#B6E2EB;
+} 
+
+#home{
+	margin-top:-50px;
+}
+
+ #about,#howItWorks{
+    background-color:#B6E2EB;
+}
+
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:focus, .navbar-inverse .navbar-nav > .active > a:hover {
+    color: #FDC010;
+    background-color:#151515;
+}
+
+.resumeEntry th{
+	color:white;
+	background-color:#404040;
+}
+
+th,td{
+	padding:5px;
+}
+
+table{
+	width:100%;
+	border:1px solid white;
+	background-color:white;
+}
+
+h3{
+	cursor:pointer;
+	color:#0297A7;
+}
+
+.resumeForm{
+	display:none;
+}
+
+@media screen and (max-width:560px){
+    h1{
+        font-size:150%;
+    }
+    h3,label{
+        font-size:100%;
+    }
+    th,.glyphicon{
+        font-size:0.5em;
+    }
+    .resumeForm,.container-fluid{
+         padding:10px;
+    }
+}
