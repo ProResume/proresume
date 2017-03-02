@@ -1,5 +1,5 @@
 <?php
-require_once('config.php');
+require_once('linkedinconfig.php');
 require_once('db.php');
  
 if ($config['Client_ID'] === '8649rkm4xa4lfa' || $config['Client_Secret'] === 'jxZbsXW1MPYHp87w') {
