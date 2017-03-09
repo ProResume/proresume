@@ -1,24 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylsheet" href="webEditor.css">
 </head>
 <body>
-<?php
-include 'config.php';
-$sql="SELECT FirstName FROM Users WHERE UserId='1'";
-$result=mysqli_query($con,$sql);
-$row=mysqli_fetch_assoc($result);
-printf ("%s (%s)\n",$row["FirstName"]);
+<div id="leftToolBar"><h3>Left Tool Bar</h3></div>
+<div id="resumeContainer">
+    <div id="headerContainer">
+        <div class="headerItem">
+            <h1>Kyra Wayne</h1>
+        </div>
+        <div class="headerItem">
+            <div class="col-3"><h3>Phone</h3></div>
+            <div class="col-3"><h3>Email</h3></div>
+            <div class="col-3"><h3>City</h3></div>
+        </div>
+        <div class="headerItem">
+            <h3>Objective</h3>
+            <p> ... </p>
+        </div>
+    </div>
+    <div class="headerItem">
+            <h3>Skills</h3>
+            <div class="col-2"><p> ... </p></div>
+            <div class="col-2"><p> ... </p></div>
+    </div>
+    <div class="headerItem">
+            <h3>Education</h3>
+            <p> ... </p>
+    </div>
+    <div class="headerItem">
+            <h3>Experience</h3>
+            <div class="col-2"><p> ... </p></div>
+            <div class="col-2"><p> ... </p></div>
+    </div>
+    <div class="headerItem">
+            <h3>Volunteer</h3>
+            <div class="col-3"><p> ... </p></div>
+            <div class="col-3"><p> ... </p></div>
+            <div class="col-3"><p> ... </p></div>
+    </div>
 
-mysqli_free_result($result);
-?>
-
-<h1 id="nameHeader">Kyra Wayne</h1>
-
-<ol id="sections">
-    <li class="sectionItem"></li>
-</ol>
-
+</div>
+<!--<div id="rightToolBar"><h3>Right Tool Bar</h3></div>
+-->
 
 </body>
 </html>

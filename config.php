@@ -3,12 +3,12 @@
 ini_set('display_errors','On');
 error_reporting(E_ALL);
 
-$dbh_host = "dbserver.engr.scu.edu";
-$db_user = "kyrawayne";
+$db_host = "dbserver.engr.scu.edu";
+$db_user = "kwayne";
 $db_pw = "00000979812";
 $db_name = "sdb_kwayne";
 
-$conn = mysql_connect($dbh_host, $db_user, $db_pw, $db_name)
+$conn = mysql_connect($db_host, $db_user, $db_pw, $db_name)
 		or die("Error" . mysqli_error($conn));
 
 $qry = "SHOW DATABASES";
