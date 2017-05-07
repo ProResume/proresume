@@ -9,8 +9,6 @@ if ($config['Client_ID'] === '8649rkm4xa4lfa' || $config['Client_Secret'] === 'j
 
 echo '<a href="https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id='.$config['Client_ID'].'&redirect_uri='.$config['callback_url'].'&state=98765EeFWf45A53sdfKef4233&scope=r_basicprofile r_emailaddress"><img src="./images/linkedin_connect_button.png" alt="Sign in with LinkedIn"/></a>';
 
-<?php
-
 if(isset($_GET['code'])) // get code after authorization
 {
     $url = 'https://www.linkedin.com/uas/oauth2/accessToken'; 

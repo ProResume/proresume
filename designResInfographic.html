@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html><head>
+    <link rel="stylesheet" href="css/webEditor.css">
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current',{'packages':['corechart','timeline']});
+        google.charts.setOnLoadCallback(pieCharts);
+        google.charts.setOnLoadCallback(timelineChart);
+
+        function pieCharts() {
+            var skillData = google.visualization.arrayToDataTable([
+                ['Skill', 'Proficiency'],
+                ['HTML5',5],
+                ['CSS3', 5],
+                ['PHP',3],
+                ['JS',5],
+                ['Ruby', 3],
+                ['MySQL',3]
+            ]);
+            var skillData1 = google.visualization.arrayToDataTable([
+                ['Skill', 'Proficiency'],
+                ['Java',4],
+                ['C', 5],
+                ['Obj-C',2.5],
+                ['Swift',2.5],
+                ['Python', 2],
+                ['C#',2]
+            ]);
+            var skillData2 = google.visualization.arrayToDataTable([
+                ['Skill', 'Proficiency'],
+                ['Photoshop',5],
+                ['Illustrator', 5],
+                ['InDesign',2],
+                ['iMovie',5],
+                ['AutoCAD', 2],
+                ['Japanese',4]
+            ]);
+
+            var skillOptions = {
+                slices: [{color:'#FF6666'},{color:'#FF8484'},{color:'#FFA3A3'},{color:'#FFC1C1'},{color:'#FFD1D1'},{color:'#FFEFEF'}]
+            };
+
+            var skillChart = new google.visualization.PieChart(document.getElementById('skillChart'));
+            skillChart.draw(skillData, skillOptions);
+
+            var skillChart1 = new google.visualization.PieChart(document.getElementById('skillChart1'));
+            skillChart1.draw(skillData1, skillOptions);
+
+            var skillChart2 = new google.visualization.PieChart(document.getElementById('skillChart2'));
+            skillChart2.draw(skillData2, skillOptions);
+        }
+        function timelineChart(){
+
+            var expChart = new google.visualization.Timeline(document.getElementById('expTimeline'));
+            var expData = new google.visualization.DataTable();
+
+            expData.addColumn({ type: 'string', id: 'Company' });
+            expData.addColumn({ type: 'string', id: 'Role' });
+            expData.addColumn({ type: 'date', id: 'Start' });
+            expData.addColumn({ type: 'date', id: 'End' });
+            expData.addRows([
+            [ 'Preemadonna',  'UI Engineer',    new Date(2015,3),  new Date(2017,2) ],
+            [ 'SCU Comm Dept',  'Web Developer',    new Date(2016,3), new Date(2017,2) ]
+            ]);
+
+            var expOptions = {
+                timeline: {singleColor:'#FF6666'}
+            };
+
+            expChart.draw(expData, expOptions);
+
+            var eduChart = new google.visualization.Timeline(document.getElementById('eduTimeline'));
+            var eduData = new google.visualization.DataTable();
+
+            eduData.addColumn({ type: 'string', id: 'School' });
+            eduData.addColumn({ type: 'string', id: 'Major' });
+            eduData.addColumn({ type: 'date', id: 'Start' });
+            eduData.addColumn({ type: 'date', id: 'End' });
+            eduData.addRows([
+            [ 'Santa Clara University',  'Comp Engineering',    new Date(2013,8),  new Date(2014,5) ],
+            [ 'Santa Clara University',  'Web Design Engineering',    new Date(2014,8),  new Date(2017,5) ],
+            ['University of Melbourne','Engineers Exchange Program', new Date(2015,5), new Date(2015,10)]
+            ]);
+
+            var eduOptions = {
+                timeline: {singleColor:'#FF6666'}
+            };
+
+            eduChart.draw(eduData, eduOptions);
+        }
+    </script>
+    <style>
+        h3,h2,h1{
+            color:#FF6666;
+        }
+    </style>
+</head>
+<body>
+
+ <div id="leftToolBar"><h4>Left Tool Bar</h4></div>
+    <!--RESUME BODY-->
+    <div id="resumeContainer">
+
+        <!--HEADER INFORMATION-->
+        <div id="headerContainer">
+            <div class="headerItem">
+                <h1>Kyra Wayne</h1>
+            </div>
+            <div class="headerItem">
+                <div class="col-3"><p>Phone: 360-908-0831</p></div>
+                <div class="col-3"><p>Email: kyrawayne.dev@gmail.com</p></div>
+                <div class="col-3" style="text-align:right;"><p>Location: San Jose, CA</p></div>
+            </div>
+        </div>
+
+        <!--EDUCATION 1ST-->
+         <div class="headerItem">
+                <h3>Education</h3>
+                <div id="eduTimeline" style="width:100%;height:150px;"></div>
+                <p><b>Courses:</b> Adv Programming, Abstract Data Structures, Embedded Sys, Web Programming I and II, Networks, Web Infrastructure, Graphics and Interactions, Databases,Soc. and Business and Tech, Drawing, Comp. Imaging, Graphic Design, Web Graphic Design.</p>
+        </div>
+        <!--SKILLS 2ND-->
+        <div class="headerItem">
+                <h3>Skills</h3>
+                <div class="col-3">
+                        <div id="skillChart" style="width: 100%; height: 100%;"></div>
+                </div>
+                <div class="col-3">
+                        <div id="skillChart1" style="width: 100%; height: 100%;"></div>
+                </div>
+                <div class="col-3">
+                        <div id="skillChart2" style="width: 100%; height: 100%;"></div>
+                </div>
+        </div>
+        <!--PROJECTS 3RD-->
+         <div class="headerItem">
+                <h3>Projects</h3>
+                    <div class="section-main">
+                    <p><b>Senior Design</b>, Santa Clara University, Santa Clara, CA</p>
+                    <p>Web Developer, Database Engineer</p>
+                </div>   
+                <div class="section-aside">
+                    <p>September 2016 - Present</p>
+                </div>
+         </div>
+
+         <!--EXPERIENCE 4TH-->
+        <div class="headerItem">
+                <h3>Experience</h3>
+                <div id="expTimeline" style="width:100%;height:150px;"></div>
+        </div>
+
+       <!--VOLUNTEER 5TH-->
+        <div class="headerItem">
+                <h3>Volunteer</h3>
+                <div class="section-main">
+                    <p><b>Catholic Charities</b>, Santa Clara, CA</p>
+                    <p>STEM Outreach Instructor</p>
+                </div>   
+                <div class="section-aside">
+                    <p>March - June 2016</p>
+                </div>         
+        </div>
+
+    </div>
+
+
+
+</body>
+</html>
