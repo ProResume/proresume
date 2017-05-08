@@ -359,8 +359,9 @@
 
  <div id="leftToolBar">
      <h4>Left Tool Bar</h4>
-     <h4>Education/Experience</h4>
-     <h4>Skills/Interests</h4>
+     <h4>Education</h4>
+     <h4>Skills</h4>
+     <h4>Experience</h4>
      <p><a href="#" onclick="textDisplay();skillsToText()"> Text </a></p>
      <p><a href="#" onclick="pieCharts('pie')"> Pie Chart</a></p>
      <p><a href="#" onclick="pieCharts('donut')"> Donut Chart</a></p>
