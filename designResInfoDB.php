@@ -69,9 +69,8 @@
 
         function checkPreferences(){
             <?php
-            $pref = "SELECT * FROM Resumes WHERE UserId='1' AND ResumeId='1'";
-            $result=mysqli_query($conn,$pref);
-            
+    
+
             ?>
         }
 
