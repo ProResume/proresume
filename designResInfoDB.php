@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html><head>
+<html>
+<head>
     <link rel="stylesheet" href="css/webEditor.css">
     <meta charset="UTF-8">
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -62,7 +63,17 @@
     <script type="text/javascript">
         google.charts.load('current',{'packages':['corechart','timeline']});
         google.charts.setOnLoadCallback(pieCharts);
-        google.charts.setOnLoadCallback(timelineChart);
+        google.charts.setOnLoadCallback(expTimeline);
+        google.charts.setOnLoadCallback(eduTimeline);
+        google.charts.setOnLoadCallback(volunTimeline);
+
+        function checkPreferences(){
+            <?php
+            $pref = "SELECT * FROM Resumes WHERE UserId='1' AND ResumeId='1'";
+            $result=mysqli_query($conn,$pref);
+            
+            ?>
+        }
 
         function pieCharts(chartToggle) {
             document.getElementById("skillChart").style.display="inline-block";
@@ -134,14 +145,14 @@
         function coreChartOptions(chartType){
             if(chartType=='pie'){
                 var options = {
-                    slices: [
+                    slices:[
                     <?php
                             for($i=0;$i<sizeof($colorArray);$i++){
                                 echo "{color:'".$colorArray[$i]."'},";
                             }
-                        ?>  
+                    ?>  
                     ],
-                    pieHole: 0,
+                    pieHole: 0
                 }
             }
             else if(chartType=='donut'){
@@ -175,10 +186,12 @@
             return options;
         }
 
-        function timelineChart(){
+//EXPERIENCE INFO QUERY
+        function expTimeline(){
+            document.getElementById("expTimeline").style.display="inline-block";
+            document.getElementById("expText").style.display="none";
 
              <?php
-                //EXPERIENCE INFO QUERY
                 $expInfo="SELECT Company, JobRole, YEAR(CompanyStart), MONTH(CompanyStart), DAY(CompanyStart), YEAR(CompanyEnd), MONTH(CompanyEnd), DAY(CompanyEnd) FROM ExperienceInfo WHERE UserId='1' ORDER BY CompanyStart DESC";
                 $result=mysqli_query($conn,$expInfo);
             ?>
@@ -224,11 +237,13 @@
             var expOptions = coreChartOptions('timeline');
 
             expChart.draw(expData, expOptions);
-
+        }
 /********************************************************************************/
-            
+//EDUCATION INFO QUERY
+        function eduTimeline(){
+            document.getElementById("eduTimeline").style.display="inline-block";
+            document.getElementById("eduText").style.display="none";
            <?php
-                //EDUCATION INFO QUERY
                 $eduInfo="SELECT School, Major, YEAR(YearStart), MONTH(YearStart), DAY(YearStart), YEAR(YearEnd), MONTH(YearEnd), DAY(YearEnd) FROM EducationInfo WHERE UserId='1' ORDER BY YearEnd DESC";
                 $result=mysqli_query($conn,$eduInfo);
             ?>
@@ -257,43 +272,112 @@
             var eduOptions = coreChartOptions('timeline');
 
             eduChart.draw(eduData, eduOptions);
-
+        }
 /********************************************************************************/
-            
+//VOLUNTEER INFO QUERY 
+        function volunTimeline(){     
+            document.getElementById("volunTimeline").style.display="inline-block";
+            document.getElementById("volunText").style.display="none";    
            <?php
-                //VOLUNTEER INFO QUERY
-                $eduInfo="SELECT School, Major, YEAR(YearStart), MONTH(YearStart), DAY(YearStart), YEAR(YearEnd), MONTH(YearEnd), DAY(YearEnd) FROM EducationInfo WHERE UserId='1' ORDER BY YearEnd DESC";
-                $result=mysqli_query($conn,$eduInfo);
+                $volunInfo="SELECT Organization, JobRole, VolunteerEnd, YEAR(VolunteerStart), MONTH(VolunteerStart), DAY(VolunteerStart), YEAR(VolunteerEnd), MONTH(VolunteerEnd), DAY(VolunteerEnd), JobDescript FROM VolunteerInfo WHERE UserId='1' ORDER BY VolunteerEnd DESC";
+                $result=mysqli_query($conn,$volunInfo);
             ?>
 
-            var eduChart = new google.visualization.Timeline(document.getElementById('eduTimeline'));
-            var eduData = new google.visualization.DataTable();
+            var volunChart = new google.visualization.Timeline(document.getElementById('volunTimeline'));
+            var volunData = new google.visualization.DataTable();
 
-            eduData.addColumn({ type: 'string', id: 'School' });
-            eduData.addColumn({ type: 'string', id: 'Major' });
-            eduData.addColumn({ type: 'date', id: 'Start' });
-            eduData.addColumn({ type: 'date', id: 'End' });
+            volunData.addColumn({ type: 'string', id: 'Organization' });
+            volunData.addColumn({ type: 'string', id: 'JobRole' });
+            volunData.addColumn({ type: 'date', id: 'Start' });
+            volunData.addColumn({ type: 'date', id: 'End' });
             <?php
                 while($row=mysqli_fetch_array($result)){
-                        $school = $row["School"];
-                        $major = $row["Major"];
-                        $yStart = $row["YEAR(YearStart)"];
-                        $mStart = $row["MONTH(YearStart)"];
-                        $dStart = $row["DAY(YearStart)"];
-                        $yEnd = $row["YEAR(YearEnd)"];
-                        $mEnd = $row["MONTH(YearEnd)"];
-                        $dEnd = $row["DAY(YearEnd)"];
-                        echo "eduData.addRow(['".$school."','".$major."',new Date(".$yStart.",".$mStart.",".$dStart."), new Date(".$yEnd.",".$mEnd.",".$dEnd.")]); ";
-             }
+                        $org = $row["Organization"];
+                        $volunJob = $row["JobRole"];
+                        $yStart = $row["YEAR(VolunteerStart)"];
+                        $mStart = $row["MONTH(VolunteerStart)"];
+                        $dStart = $row["DAY(VolunteerStart)"];
+                        $yEnd = $row["YEAR(VolunteerEnd)"];
+                        $mEnd = $row["MONTH(VolunteerEnd)"];
+                        $dEnd = $row["DAY(VolunteerEnd)"];
+                        echo "volunData.addRow(['".$org."','".$volunJob."',new Date(".$yStart.",".$mStart.",".$dStart."), new Date(".$yEnd.",".$mEnd.",".$dEnd.")]); ";
+                        }
             ?>
-            document.getElementById("eduTimeline").style.height= eduData.getNumberOfRows()*60;
-            var eduOptions = coreChartOptions('timeline');
+            document.getElementById("volunTimeline").style.height= volunData.getNumberOfRows()*60;
+            var volunOptions = coreChartOptions('timeline');
 
-            eduChart.draw(eduData, eduOptions);
+            volunChart.draw(volunData, volunOptions);
+        }
 
+     function timelinesToText(){
+            var eduText = document.getElementById("eduText");
+            var expText = document.getElementById("expText");
+            var volunText = document.getElementById("volunText");
+          
+            <?php
+                        //EXPERIENCE INFO QUERY
+                        $expTxtInfo="SELECT Company,JobRole,JobDescript,MONTHNAME(CompanyStart),YEAR(CompanyStart),MONTHNAME(CompanyEnd),YEAR(CompanyEnd),CompanyEnd FROM ExperienceInfo WHERE UserId='1' ORDER BY CompanyStart DESC LIMIT 2";
+                        $result=mysqli_query($conn,$expTxtInfo);
+                        echo "expText.innerHTML = \"";
+                        if(mysqli_num_rows($result)>0){
+                           while($row=mysqli_fetch_assoc($result)){
+                                echo "<div class='section-main'>";
+                                echo "<p><b>". $row["Company"] . "</b></p>";
+                                echo "<p>".$row["JobRole"]."</p>";
+                                $jobDescript = explode(";",$row["JobDescript"]);
+                                if(sizeof($jobDescript)>0){
+                                    echo "<ul>";
+                                    for($i=0;$i<sizeof($jobDescript);$i++){
+                                        echo "<li>".$jobDescript[$i]."</li>";
+                                    }
+                                    echo "</ul>";
+                                }
+                                echo "</div> <div class='section-aside'>";
+                                if($row["CompanyEnd"]!=NULL){
+                                    echo "<p>".$row["MONTHNAME(CompanyStart)"].", ".$row["YEAR(CompanyStart)"]." - ".$row["MONTHNAME(CompanyEnd)"].", ".$row["YEAR(CompanyEnd)"]."</p>"; 
+                                }
+                                else{
+                                    echo "<p>".$row["MONTHNAME(CompanyStart)"].", ".$row["YEAR(CompanyStart)"]." - Present</p>";
+                                } 
+                                echo "</div>"; 
+                            }
+                        }
+                        echo "\";"
+                    ?>
+                    <?php
+                        //VOLUNTEER INFO QUERY
+                        $volunTxtInfo="SELECT Organization,JobRole,JobDescript,MONTHNAME(VolunteerStart),YEAR(VolunteerStart),MONTHNAME(VolunteerEnd),YEAR(VolunteerEnd),VolunteerEnd FROM VolunteerInfo WHERE UserId='1' ORDER BY VolunteerStart DESC LIMIT 1";
+                        $result=mysqli_query($conn,$volunTxtInfo);
+                        echo "volunText.innerHTML = \"";
+                        if(mysqli_num_rows($result)>0){
+                           while($row=mysqli_fetch_assoc($result)){
+                                echo "<div class='section-main'>";
+                                echo "<p><b>". $row["Organization"] . "</b></p>";
+                                echo "<p>".$row["JobRole"]."</p>";
+                                $jobDescript = explode(";",$row["JobDescript"]);
+                                if(sizeof($jobDescript)>0){
+                                    echo "<ul>";
+                                    for($i=0;$i<sizeof($jobDescript);$i++){
+                                        echo "<li>".$jobDescript[$i]."</li>";
+                                    }
+                                    echo "</ul>";
+                                }
+                                echo "</div> <div class='section-aside'>";
+                                if($row["VolunteerEnd"]!=NULL){
+                                    echo "<p>".$row["MONTHNAME(VolunteerStart)"].", ".$row["YEAR(VolunteerStart)"]." - ".$row["MONTHNAME(VolunteerEnd)"].", ".$row["YEAR(VolunteerEnd)"]."</p>"; 
+                                }
+                                else{
+                                    echo "<p>".$row["MONTHNAME(VolunteerStart)"].", ".$row["YEAR(VolunteerStart)"]." - Present</p>";
+                                } 
+                                echo "</div>"; 
+                            }
+                        }
+                        echo "\";"
+                    ?>     
 
         }
-        function textDisplay(){
+
+        function skillTextDisplay(){
             var skillText = document.getElementById("skillText");
             var skillText1 = document.getElementById("skillText1");
             var skillText2 = document.getElementById("skillText2");
@@ -342,8 +426,7 @@
                 }
                 echo "\";"
             ?>
-        }
-        
+        } 
         function skillsToText(){
             document.getElementById("skillChart").style.display="none";
             document.getElementById("skillChart1").style.display="none";
@@ -352,27 +435,37 @@
             document.getElementById("skillText1").style.display="inline-block";
             document.getElementById("skillText2").style.display="inline-block";
         }
+        function timelinesToText(){
+            document.getElementById("expTimeline").style.display="none";
+            document.getElementById("eduTimeline").style.display="none";
+            document.getElementById("volunTimeline").style.display="none";
+            document.getElementById("expText").style.display="inline-block";
+            document.getElementById("eduText").style.display="inline-block";
+            document.getElementById("volunText").style.display="inline-block";
+        }
 
     </script>
 </head>
-<body>
+<body onload="checkPreferences()">
 
  <div id="leftToolBar">
      <h4>Left Tool Bar</h4>
      <h4>Education/Experience</h4>
+     <p><a href="#" onclick="timelineTextDisplay();timelinesToText()"> Text </a></p>
+     <p><a href="#" onclick="eduTimeline();"> Edu Timeline </a></p>
+     <p><a href="#" onclick="expTimeline();"> Exp Timeline </a></p>
+     <p><a href="#" onclick="volunTimeline();"> Volun Timeline </a></p>
      <h4>Skills/Interests</h4>
-     <p><a href="#" onclick="textDisplay();skillsToText()"> Text </a></p>
-     <p><a href="#" onclick="pieCharts('pie')"> Pie Chart</a></p>
-     <p><a href="#" onclick="pieCharts('donut')"> Donut Chart</a></p>
+     <p><a href="#" onclick="skillTextDisplay();skillsToText();"> Text </a></p>
+     <p><a href="#" onclick="pieCharts('pie');"> Pie Chart</a></p>
+     <p><a href="#" onclick="pieCharts('donut');"> Donut Chart</a></p>
  </div>
-    <!--RESUME BODY-->
-    <div id="resumeContainer">
-
+<!--RESUME BODY-->
+<div id="resumeContainer">
         <!--HEADER INFORMATION-->
         <div id="headerContainer">
             <div class="headerItem">
                 <?php 
-                    //USER BASIC INFO QUERY
                     $userInfo="SELECT * FROM Users WHERE UserId='1' LIMIT 1";
                     $result=mysqli_query($conn,$userInfo);
                     $row=mysqli_fetch_assoc($result);
@@ -382,21 +475,51 @@
             <div class="headerItem">
                 <div class="col-3"> <?php echo "<p>Phone: ". $row["Phone"] . "</p>"; ?> </div>
                 <div class="col-3"> <?php echo "<p>Email: ". $row["Email"] . "</p>"; ?> </div>
-                <div class="col-3"><?php echo "<p>Location: ". $row["City"].", ". $row["State"]."</p>"; ?></div>
+                <div class="col-3"><?php echo "<p>Location: ". $row["City"].", ". $row["State"]."</p>"; ?> </div>
             </div>
         </div>
 
-        <!-- 
-        //figure out the ordering...
-        <?php $resumeType="SELECT ResumeType FROM ResumeInfo WHERE UserId='1' AND ResumeId='0'";?>
-        //get user session id
-        -->
         <!--EDUCATION 1ST-->
          <div class="headerItem">
                 <h3>Education</h3>
-                <div id="eduTimeline" style="width:100%;"></div>
-                <?php
+                <div id="eduTimeline" style="width:100%;">
+                </div>
+                <div id="eduText">
+                  <?php
                         //EDUCATION INFO QUERY
+                        $eduTxtInfo="SELECT School, Major, Major1, Minor, Minor1, CourseList, YearEnd, YEAR(YearStart), MONTHNAME(YearStart), DAY(YearStart),YEAR(YearEnd), MONTHNAME(YearEnd), DAY(YearEnd) FROM EducationInfo WHERE UserId='1' ORDER BY YearEnd DESC LIMIT 1";
+                        $result=mysqli_query($conn,$eduTxtInfo);
+                        echo "eduText.innerHTML = \"";
+                        if(mysqli_num_rows($result)>0){
+                            while($row=mysqli_fetch_assoc($result)){
+                                echo "<div class='section-main'>";
+                                echo "<p><b>". $row["School"] . "</b></p>";
+                                if($row["Major1"]!=NULL){
+                                    echo "<p>".$row["Major"]." and ".$row["Major1"];
+                                }
+                                else{
+                                    echo "<p>".$row["Major"];
+                                }
+
+                                if ($row["Minor1"]!=NULL && $row["Minor"]!= NULL){
+                                    echo " and double minors in ".$row["Minor"]." and ".$row["Minor1"].".</p>";
+                                }
+                                else if($row["Minor1"]==NULL && $row["Minor"]!=NULL){
+                                    echo " and a minor in " . $row["Minor"]."</p>";
+                                }
+                                else{
+                                    echo ".</p>";
+                                }
+                                echo "<p><b>Courses:</b> " . $row["CourseList"]."</p></div> <div class='section-aside'>";
+                                echo "<p>". $row["MONTHNAME(YearStart)"] . " " . $row["DAY(YearStart)"].", ".$row["YEAR(YearStart)"]." - ".$row["MONTHNAME(YearEnd)"]." ".$row["DAY(YearEnd)"].", ".$row["YEAR(YearEnd)"]."</p>";
+                                echo "</div>";
+                            }
+                        }
+                        echo "\";"
+            ?>
+
+                </div>
+             <!--   <?php
                         $eduInfo="SELECT School, CourseList FROM EducationInfo WHERE UserId='1' ORDER BY YearEnd DESC";
                         $result=mysqli_query($conn,$eduInfo);
                         if(mysqli_num_rows($result)>0){
@@ -404,8 +527,9 @@
                                 echo "<p><b>".$row["School"]." Courses:</b> " . $row["CourseList"]."</p><br>";
                             }
                         } 
-                    ?>
+                    ?>-->
         </div>
+
         <!--SKILLS 2ND-->
         <div class="headerItem">
                 <h3>Skills</h3>
@@ -425,6 +549,7 @@
                     </div>
                 </div>
         </div>
+
         <!--PROJECTS 3RD-->
          <div class="headerItem">
                 <h3>Projects</h3>
@@ -445,52 +570,22 @@
                                 echo "</div>"; 
                             }
                         }
-                    ?>
+                ?>
          </div>
 
          <!--EXPERIENCE 4TH-->
         <div class="headerItem">
                 <h3>Experience</h3>
-                <div id="expTimeline" style="width:100%;">
-                </div>
+                <div id="expTimeline" style="width:100%;"></div>
+                <div id="expText"></div>
         </div>
 
        <!--VOLUNTEER 5TH-->
         <div class="headerItem">
-                <h3>Volunteer</h3>
-                <?php
-                        //VOLUNTEER INFO QUERY
-                        $volunInfo="SELECT Organization,JobRole,JobDescript,MONTHNAME(VolunteerStart),YEAR(VolunteerStart),MONTHNAME(VolunteerEnd),YEAR(VolunteerEnd),VolunteerEnd FROM VolunteerInfo WHERE UserId='1' ORDER BY VolunteerStart DESC";
-                        $result=mysqli_query($conn,$volunInfo);
-                        if(mysqli_num_rows($result)>0){
-                           while($row=mysqli_fetch_assoc($result)){
-                                echo "<div class='section-main'>";
-                                echo "<p><b>". $row["Organization"] . "</b></p>";
-                                echo "<p>".$row["JobRole"]."</p>";
-                                $jobDescript = explode(";",$row["JobDescript"]);
-                                if(sizeof($jobDescript)>0){
-                                    echo "<ul>";
-                                    for($i=0;$i<sizeof($jobDescript);$i++){
-                                        echo "<li>".$jobDescript[$i]."</li>";
-                                    }
-                                    echo "</ul>";
-                                }
-                                echo "</div> <div class='section-aside'>";
-                                if($row["VolunteerEnd"]!=NULL){
-                                    echo "<p>".$row["MONTHNAME(VolunteerStart)"].", ".$row["YEAR(VolunteerStart)"]." - ".$row["MONTHNAME(VolunteerEnd)"].", ".$row["YEAR(VolunteerEnd)"]."</p>"; 
-                                }
-                                else{
-                                    echo "<p>".$row["MONTHNAME(VolunteerStart)"].", ".$row["YEAR(VolunteerStart)"]." - Present</p>";
-                                } 
-                                echo "</div>"; 
-                            }
-                        }
-                    ?>            
+            <h3>Volunteer</h3>          
+            <div id="volunTimeline" style="width:100%"></div>
+            <div id="volunText"></div>
         </div>
-
-    </div>
-
-
-
+</div>
 </body>
 </html>

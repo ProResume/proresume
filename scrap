@@ -1,0 +1,35 @@
+ <!-- <?php 
+                        //VOLUNTEER INFO QUERY
+                        $volunInfo="SELECT Organization,JobRole,JobDescript,MONTHNAME(VolunteerStart),YEAR(VolunteerStart),MONTHNAME(VolunteerEnd),YEAR(VolunteerEnd),VolunteerEnd FROM VolunteerInfo WHERE UserId='1' ORDER BY VolunteerStart DESC";
+                        $result=mysqli_query($conn,$volunInfo);
+                        if(mysqli_num_rows($result)>0){
+                           while($row=mysqli_fetch_assoc($result)){
+                                echo "<div class='section-main'>";
+                                echo "<p><b>". $row["Organization"] . "</b></p>";
+                                echo "<p>".$row["JobRole"]."</p>";
+                                $jobDescript = explode(";",$row["JobDescript"]);
+                                if(sizeof($jobDescript)>0){
+                                    echo "<ul>";
+                                    for($i=0;$i<sizeof($jobDescript);$i++){
+                                        echo "<li>".$jobDescript[$i]."</li>";
+                                    }
+                                    echo "</ul>";
+                                }
+                                echo "</div> <div class='section-aside'>";
+                                if($row["VolunteerEnd"]!=NULL){
+                                    echo "<p>".$row["MONTHNAME(VolunteerStart)"].", ".$row["YEAR(VolunteerStart)"]." - ".$row["MONTHNAME(VolunteerEnd)"].", ".$row["YEAR(VolunteerEnd)"]."</p>"; 
+                                }
+                                else{
+                                    echo "<p>".$row["MONTHNAME(VolunteerStart)"].", ".$row["YEAR(VolunteerStart)"]." - Present</p>";
+                                } 
+                                echo "</div>"; 
+                            }
+                        }*/
+                    ?>  -->  
+
+                     <!-- 
+        //figure out the ordering...
+        <?php $resumeType="SELECT ResumeType FROM ResumeInfo WHERE UserId='1' AND ResumeId='0'";?>
+        //get user session id
+        -->
+        <!--EDUCATION 1ST-->
